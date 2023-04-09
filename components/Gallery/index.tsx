@@ -6,7 +6,7 @@ import { FaRegTimesCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 
 interface Props {
-  imageList: any;
+  postList: any;
   showGallery: boolean;
   setShowGallery: React.Dispatch<boolean>;
   index?: number;
@@ -14,7 +14,7 @@ interface Props {
 
 const Gallery: React.FC<Props> = (props) => {
   const router = useRouter();
-  const { imageList, showGallery, setShowGallery, index } = props;
+  const { postList, showGallery, setShowGallery, index } = props;
 
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
   const [swiperIndex, setSwiperIndex] = useState<any>();
@@ -38,7 +38,7 @@ const Gallery: React.FC<Props> = (props) => {
           grabCursor={true}
           zoom={true}
           className='gallery'>
-          {imageList.map((item: any, index: number) =>
+          {postList.map((item: any, index: number) =>
             item.type === 'image' ? (
               <SwiperSlide key={index}>
                 <SwiperSlide key={index}>
@@ -78,7 +78,7 @@ const Gallery: React.FC<Props> = (props) => {
           centeredSlides={true}
           // centeredSlidesBounds={true}
           className='gallery-thumbs'>
-          {imageList.map((item: any, index: number) =>
+          {postList.map((item: any, index: number) =>
             item.type === 'image' ? (
               <SwiperSlide key={index}>
                 <div className='h-[60px] object-cover flex items-center'>

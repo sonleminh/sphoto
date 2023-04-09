@@ -1,41 +1,37 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
-// import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import axiosClient from '@/api/axiosClient';
-import 'react-medium-image-zoom/dist/styles.css';
-import Header from '@/components/Header';
 import Image from 'next/image';
 import Gallery from '@/components/Gallery';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/zoom';
+import { useAppSelector } from '@/Redux/hooks';
+import { FaRegImage } from 'react-icons/fa';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const user = useAppSelector((state) => state.user);
+  const loading = useAppSelector((state) => state.loading.value);
   const [hasWindow, setHasWindow] = useState(false);
-  const [imageList, setImageList] = useState<any>([]);
-  const [isLoad, setIsLoad] = useState(false);
+  const [postList, setPostList] = useState<any>([]);
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [index, setIndex] = useState<number>();
-  const [thumbsSwiper, setThumbsSwiper] = useState<any>();
-  const [swiperIndex, setSwiperIndex] = useState<any>();
 
   useEffect(() => {
     const getList = async () => {
       try {
-        const res = await axiosClient.get('/api/post');
-        setImageList(res);
+        const res = await axiosClient.get(`/api/post/${user._id}`);
+        setPostList(res);
       } catch (error) {
         console.log(error);
       }
     };
     getList();
-  }, [isLoad]);
+  }, [user._id, loading]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -57,39 +53,54 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main>
-        <Header isLoad={isLoad} setIsLoad={setIsLoad} />
-        <div className='columns-4 gap-[15px] p-[15px] bg-black'>
-          {hasWindow &&
-            imageList?.map((item: any, index: number) =>
-              item.type === 'image' ? (
-                <div
-                  key={index}
-                  onClick={() => handleClickImage(index)}
-                  className='w-full mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
-                  <Image src={item.url} alt='c' width={720} height={720} />
-                </div>
-              ) : (
-                <div
-                  key={index}
-                  onClick={() => handleClickImage(index)}
-                  className='mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
-                  <video autoPlay loop muted controls className='w-auto h-auto'>
-                    <source src={item.url} />
-                  </video>
-                </div>
-              )
-            )}
+        <div className='mt-[60px]'>
+          {postList.length === 0 ? (
+            <div className='flex justify-center items-center h-[100vh] bg-black text-[#aaaaaa]'>
+              <div className='flex justify-center items-center w-[70%] h-[50%] border-2 border-[#A0A1A4] rounded-[6px] text-[30px]'>
+                Create your gallery{' '}
+                <FaRegImage className='ml-10 text-[100px]' />
+              </div>
+            </div>
+          ) : (
+            <div className='columns-4 gap-[15px] p-[15px] bg-black'>
+              {hasWindow &&
+                postList?.map((item: any, index: number) =>
+                  item.type === 'image' ? (
+                    <div
+                      key={index}
+                      onClick={() => handleClickImage(index)}
+                      className='w-full mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
+                      <Image src={item.url} alt='c' width={720} height={720} />
+                    </div>
+                  ) : (
+                    <div
+                      key={index}
+                      onClick={() => handleClickImage(index)}
+                      className='mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        controls
+                        className='w-auto h-auto'>
+                        <source src={item.url} />
+                      </video>
+                    </div>
+                  )
+                )}
+            </div>
+          )}
+          {showGallery ? (
+            <Gallery
+              postList={postList}
+              showGallery={showGallery}
+              setShowGallery={setShowGallery}
+              index={index}
+            />
+          ) : (
+            <></>
+          )}
         </div>
-        {showGallery ? (
-          <Gallery
-            imageList={imageList}
-            showGallery={showGallery}
-            setShowGallery={setShowGallery}
-            index={index}
-          />
-        ) : (
-          <></>
-        )}
       </main>
     </div>
   );
