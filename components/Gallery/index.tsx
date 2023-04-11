@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper';
 import { FaRegTimesCircle } from 'react-icons/fa';
+import { BsXLg } from 'react-icons/bs';
+
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -23,7 +25,7 @@ const Gallery: React.FC<Props> = (props) => {
 
   return (
     <React.Fragment>
-      <div className='fixed top-0 right-0 bottom-0 left-0 bg-black-rgba'>
+      <div className='fixed top-0 right-0 bottom-0 left-0 bg-black-rgba z-[70]'>
         <Swiper
           initialSlide={index}
           thumbs={{
@@ -107,9 +109,9 @@ const Gallery: React.FC<Props> = (props) => {
           )}
         </Swiper>
       </div>
-      <FaRegTimesCircle
+      <BsXLg
         onClick={() => setShowGallery(!showGallery)}
-        className='fixed top-2 right-2 text-[50px] text-[#ffffff75] cursor-pointer'
+        className='fixed top-2 right-3 p-3 text-[50px] bg-[#ffffff30] text-[#ffffff75] rounded-[50%] cursor-pointer z-[70]'
       />
     </React.Fragment>
   );

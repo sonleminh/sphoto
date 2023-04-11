@@ -147,10 +147,8 @@ const Header = () => {
     setOpenMobileMenu(!openMobileMenu);
   };
 
-  console.log(openMobileMenu);
-
   return (
-    <div className='fixed top-0 w-full  border-[#A0A1A4] border-b-[2px] text-[#eeeeee] bg-black'>
+    <div className='fixed top-0 w-full  border-[#A0A1A4] border-b-[2px] text-[#eeeeee] bg-black z-[69]'>
       <div className='w-[50%] h-[60px] pt-2 m-auto flex items-center justify-between text-[18px] lg:w-[60%] lg:h-[50px] lg:pt-1 lg:text-[16px] sm:w-full sm:h-[50px] sm:px-4'>
         <Link href='/' className='max-h-[40px]'>
           <Image
@@ -215,7 +213,7 @@ const Header = () => {
                 </Transition.Child>
 
                 <div className='fixed inset-0 z-10 overflow-y-auto'>
-                  <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
+                  <div className='flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0'>
                     <Transition.Child
                       as={Fragment}
                       enter='ease-out duration-300'
@@ -224,10 +222,10 @@ const Header = () => {
                       leave='ease-in duration-200'
                       leaveFrom='opacity-100 translate-y-0 sm:scale-100'
                       leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
-                      <Dialog.Panel className='lg:max-w-[800px] relative transform overflow-hidden rounded-lg bg-black text-[#f3f3f3] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg'>
-                        <div className='px-4 pt-5 pb-4 mb-2 sm:p-6 sm:pb-4'>
+                      <Dialog.Panel className='max-w-[800px] w-full lg:max-w-[800px] relative transform overflow-hidden rounded-lg bg-black text-[#f3f3f3] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:mx-5'>
+                        <div className='px-4 pt-3 pb-4 mb-2 sm:p-6 sm:px-2 sm:pb-4'>
                           <div className='sm:flex sm:items-start'>
-                            <div className='mt-3 text-center sm:mt-0 sm:ml-2 sm:text-left'>
+                            <div className='mt-2 text-center sm:mt-0 sm:ml-2 sm:text-left'>
                               <Dialog.Title
                                 as='h2'
                                 className='text-[24px] font-semibold'>
@@ -237,7 +235,7 @@ const Header = () => {
                                 <div className='flex justify-between items-center max-w-[200px] px-2 py-2 my-5 border-2 border-[#A0A1A4] rounded'>
                                   <label
                                     htmlFor='file_input'
-                                    className='flex items-center mr-3 text-[30px]'>
+                                    className='flex items-center mr-3 text-[30px] sm:text-[20px]'>
                                     <MdOutlineAddPhotoAlternate />
                                   </label>
                                   <input
@@ -250,38 +248,38 @@ const Header = () => {
                                     className=''
                                   />
                                 </div>
-                                <div className='grid grid-cols-6 gap-2'>
+                                <div className='grid grid-cols-6 gap-2 sm:grid-cols-4'>
                                   {previewSource &&
                                     previewSource.map(
                                       (item: any, index: number) => (
                                         <div
                                           key={index}
-                                          className='relative flex justify-center items-center max-h-[150px] border-[1px] border-[#585555] rounded overflow-hidden'>
+                                          className='relative flex justify-center items-center max-h-[150px] border-[1px] border-[#585555] rounded overflow-hidden sm:h-[80px]'>
                                           {item.startsWith('data:image') ? (
                                             <div className=''>
                                               <Image
                                                 src={item}
                                                 alt='choosen'
-                                                className='max-w-[150px] max-h-[150px] object-contain'
+                                                className='max-w-[150px] max-h-[150px] object-contain sm:max-w-[80px]'
                                                 width={720}
                                                 height={580}
                                               />
-                                              <div className='absolute top-0 right-0 w-[20px] h-[20px] bg-[#3e4042] rounded-bl'>
+                                              <div className='absolute top-0 right-0 w-[20px] h-[20px] bg-[#3e4042] rounded-bl sm:w-[15px] sm:h-[15px]'>
                                                 <BsXLg
                                                   onClick={() =>
                                                     handleDeletePreview(index)
                                                   }
-                                                  className='p-[3px] text-[20px] z-100 cursor-pointer'
+                                                  className='p-[3px] text-[20px] z-100 cursor-pointer sm:text-[15px]'
                                                 />
                                               </div>
                                             </div>
                                           ) : (
-                                            <div className=''>
+                                            <div>
                                               <video
                                                 muted
                                                 controls
                                                 id='video-tag'
-                                                className='w-auto max-h-[150px]'>
+                                                className='w-auto max-h-[150px] sm:max-h-[80px]'>
                                                 <source
                                                   id='video-source'
                                                   src={item}
@@ -305,16 +303,16 @@ const Header = () => {
                             </div>
                           </div>
                         </div>
-                        <div className='px-4 py-3 bg-[#151718] sm:flex sm:flex-row-reverse sm:px-6'>
+                        <div className='flex justify-end px-4 py-3 bg-[#151718]'>
                           <button
                             type='button'
-                            className='inline-flex w-full justify-center rounded-md bg-[#000] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#3a3a3a] sm:ml-3 sm:w-auto'
+                            className='inline-flex w-[100px] justify-center rounded-md bg-white text-gray-900 px-3 py-2 text-sm font-semibold  shadow-sm hover:bg-[#cccccc] sm:ml-3 sm:w-auto sm:px-5'
                             onClick={handleSubmit}>
                             Upload
                           </button>
                           <button
                             type='button'
-                            className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-[#cccccc] sm:mt-0 sm:w-auto'
+                            className='inline-flex w-[100px] justify-center px-3 py-2 ml-4 rounded-md bg-[#000] text-white text-sm font-semibold shadow-sm hover:bg-[#3a3a3a] sm:mt-0 sm:w-auto sm:px-5'
                             onClick={() => {
                               setOpenAddModal(false);
                               setPreviewSource([]);
@@ -365,36 +363,48 @@ const Header = () => {
               className='hidden ml-10 sm:block'
             />
             {openMobileMenu ? (
-              <div className='absolute top-0 right-0 w-[120px] h-[100vh] bg-[#313131]'>
-                <BsXLg
+              <div>
+                <div
+                  className={`absolute top-0 right-0 w-[120px] h-[100vh] bg-[#000] border-[#414141] border-l-[1px] z-[69] transform ${
+                    openMobileMenu
+                      ? 'translate-x-[0%]'
+                      : 'translate-x-[100%] ease-in-out duration-300'
+                  }`}>
+                  <BsXLg
+                    onClick={() => handleOpenMobileMenu()}
+                    className='absolute top-[10px] left-[10px]'
+                  />
+                  <ul className='mt-8'>
+                    <Link
+                      href='/profile'
+                      onClick={() => handleOpenMobileMenu()}>
+                      <li className='flex items-center w-full px-5 py-3 border-[#414141] border-b-[1px] hover:bg-[#1d1d1d] hover:text-[#A0A1A4] hover:cursor-pointer'>
+                        <FaUserCircle className='text-[24px]' />
+                        <span className='w-full ml-1 text-[14px] text-ellipsis overflow-hidden ...'>
+                          {user.username}
+                        </span>
+                      </li>
+                    </Link>
+                    <Link href='/image' onClick={() => handleOpenMobileMenu()}>
+                      <li className='px-5 py-3 border-[#414141] border-b-[1px] hover:bg-[#1d1d1d]'>
+                        <FaRegImages className='w-full py-[3px] mx-auto border-[1px] border-[#585555] rounded text-[26px]' />
+                      </li>
+                    </Link>
+                    <Link href='/video' onClick={() => handleOpenMobileMenu()}>
+                      <li className='px-5 py-3 border-[#414141] border-b-[1px] hover:bg-[#1d1d1d]'>
+                        <FaPhotoVideo className='w-full py-[3px] mx-auto border-[1px] border-[#585555] rounded text-[26px]' />
+                      </li>
+                    </Link>
+                    <li
+                      onClick={handleLogout}
+                      className='px-5 py-1 py-3 border-b-[1px] border-[#282828] text-[14px] whitespace-nowrap hover:bg-[#1d1d1d] hover:cursor-pointer'>
+                      Đăng xuất
+                    </li>
+                  </ul>
+                </div>
+                <div
                   onClick={() => handleOpenMobileMenu()}
-                  className='absolute top-[10px] left-[10px]'
-                />
-                <ul className='mt-8'>
-                  <Link href='/profile'>
-                    <li className='flex items-center w-full px-4 py-2 border-[#A0A1A4] border-b-[1px] hover:text-[#A0A1A4] hover:cursor-pointer'>
-                      <FaUserCircle className='text-[24px]' />
-                      <span className='w-full ml-1 text-[14px] text-ellipsis overflow-hidden ...'>
-                        {user.username}
-                      </span>
-                    </li>
-                  </Link>
-                  <Link href='/image'>
-                    <li className='px-2 py-2 border-[#A0A1A4] border-b-[1px]'>
-                      <FaRegImages className='w-[50px] py-[3px] mx-2 border-[1px] border-[#585555] rounded text-[26px]' />
-                    </li>
-                  </Link>
-                  <Link href='/video'>
-                    <li className='px-2 py-2 border-[#A0A1A4] border-b-[1px]'>
-                      <FaPhotoVideo className='w-[50px] py-[3px] mx-2 border-[1px] border-[#585555] rounded text-[26px]' />
-                    </li>
-                  </Link>
-                  <li
-                    onClick={handleLogout}
-                    className='px-4 py-1 py-2 border-b-[1px] border-[#282828] text-[14px] whitespace-nowrap hover:bg-[#282828] hover:cursor-pointer'>
-                    Đăng xuất
-                  </li>
-                </ul>
+                  className='fixed top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.5)] z-[68]'></div>
               </div>
             ) : (
               <></>

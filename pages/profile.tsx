@@ -97,34 +97,34 @@ const List = () => {
   };
 
   return (
-    <div className='pt-10 mt-[60px] mb-[40px] bg-black text-[#eeeeee]'>
-      <div className='w-[700px] h-full mx-auto rounded-[5px] border-[#A0A1A4] border-[2px]'>
-        <div className='flex justify-between p-5 border-b-2 border-b-[#A0A1A4]'>
-          <p className='text-[20px]'>Photo List</p>
-          <div className='flex justify-between w-[75%]'>
+    <div className='pt-10 mt-[60px] mb-[40px] bg-black text-[#eeeeee] sm:mx-5'>
+      <div className='w-[700px] h-full mx-auto rounded-[5px] border-[#A0A1A4] border-[2px] sm:w-full'>
+        <div className='flex justify-between p-5 border-b-2 border-b-[#A0A1A4] sm:p-3'>
+          <p className='text-[20px] sm:text-[15px]'>Photo List</p>
+          <div className='flex justify-between w-[75%] sm:text-[12px]'>
             <button
               onClick={() => setTypeData('post')}
-              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555]'>
+              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555] sm:w-[40px] sm:px-1'>
               All
             </button>
             <button
               onClick={() => setTypeData('image')}
-              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555]'>
+              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555] sm:w-[40px] sm:px-1'>
               Photo
             </button>
             <button
               onClick={() => setTypeData('video')}
-              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555]'>
+              className='w-[70px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555] sm:w-[40px] sm:px-1'>
               Video
             </button>
             <button
               onClick={handleDeleteMany}
-              className='w-[50px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555]'>
+              className='w-[50px] px-3 py-0.5 border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#585555] sm:w-[40px] sm:px-1'>
               <FaRegTrashAlt className='mx-auto' />
             </button>
             <button
               onClick={handleDeleteAll}
-              className='w-[90px] px-3 py-1 bg-[#c72543] rounded-[5px] hover:bg-[#881414]'>
+              className='w-[90px] px-3 py-1 bg-[#c72543] rounded-[5px] hover:bg-[#881414] sm:w-[60px] sm:px-1'>
               Delete all
             </button>
           </div>

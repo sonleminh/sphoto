@@ -10,6 +10,7 @@ import logo from '../assets/sphoto-logo.png';
 import Link from 'next/link';
 import axiosClient from '@/api/axiosClient';
 import { toast } from 'react-toastify';
+import SignInGoogle from '@/components/SignInGoogle';
 
 interface signUpValueForm {
   username: string;
@@ -182,11 +183,12 @@ const SignUp = () => {
             }}
           </Formik>
           <div className='w-full mt-7 mb-5 text-center'>
-            <button
+            {/* <button
               onClick={signInWithGoogle}
               className='login-with-google-btn'>
               Sign in with Google
-            </button>
+            </button> */}
+            <SignInGoogle />
           </div>
           <div className='w-full text-center'>
             <button className='mb-3'>
