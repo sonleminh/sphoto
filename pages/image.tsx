@@ -1,12 +1,23 @@
 import { useState, useEffect } from 'react';
 import axiosClient from '@/api/axiosClient';
 import Image from 'next/image';
-import Gallery from '@/components/Gallery';
+import Carousel from '@/components/Carousel';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import { useAppSelector } from '@/Redux/hooks';
+import { MyPage } from '@/page';
 
-const ImagePage = () => {
+interface UserState {
+  _id: string;
+  username: string;
+  createdAt: string;
+}
+
+const ImagePage: MyPage = () => {
+  const user: UserState = useAppSelector((state) => state.user);
+  const loading = useAppSelector((state) => state.loading.value);
+
   const [imageList, setImageList] = useState<any>([]);
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [index, setIndex] = useState<number>();
@@ -14,14 +25,14 @@ const ImagePage = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const res = await axiosClient.get('/api/image');
+        const res = await axiosClient.get(`/api/image/${user._id}`);
         setImageList(res);
       } catch (error) {
         console.log(error);
       }
     };
     getList();
-  }, []);
+  }, [user._id, loading]);
 
   const handleClickImage = (index: number) => {
     setShowGallery(!showGallery);
@@ -29,8 +40,8 @@ const ImagePage = () => {
   };
   return (
     <main>
-      <div className='mt-[60px]'>
-        <div className='columns-4 gap-[15px] p-[15px] bg-black'>
+      <div className='mt-[65px]'>
+        <div className='columns-4 gap-[15px] p-[15px] bg-black sm:columns-2'>
           {imageList?.map((item: any, index: number) => (
             // <Link
             //   href={`/image/${index}`}
@@ -43,7 +54,7 @@ const ImagePage = () => {
           ))}
         </div>
         {showGallery ? (
-          <Gallery
+          <Carousel
             postList={imageList}
             showGallery={showGallery}
             setShowGallery={setShowGallery}
@@ -58,3 +69,5 @@ const ImagePage = () => {
 };
 
 export default ImagePage;
+
+ImagePage.Layout = 'Default';

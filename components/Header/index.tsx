@@ -78,6 +78,16 @@ const Header = () => {
       return file;
     } catch (error) {
       console.error(error);
+      toast.error('Dung lượng ảnh tối đa 10MB', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }
   };
 
@@ -232,10 +242,10 @@ const Header = () => {
                                 Upload Media
                               </Dialog.Title>
                               <div className='mt-5'>
-                                <div className='flex justify-between items-center max-w-[200px] px-2 py-2 my-5 border-2 border-[#A0A1A4] rounded'>
+                                <div className='flex justify-between items-center max-w-[200px] px-2 py-2 my-5 border-2 border-[#A0A1A4] rounded cursor-pointer'>
                                   <label
                                     htmlFor='file_input'
-                                    className='flex items-center mr-3 text-[30px] sm:text-[20px]'>
+                                    className='flex items-center mr-3 text-[30px] sm:text-[20px] cursor-pointer'>
                                     <MdOutlineAddPhotoAlternate />
                                   </label>
                                   <input
@@ -245,7 +255,7 @@ const Header = () => {
                                     accept='image/*, video/*'
                                     multiple
                                     onChange={handleInputChange}
-                                    className=''
+                                    className='cursor-pointer'
                                   />
                                 </div>
                                 <div className='grid grid-cols-6 gap-2 sm:grid-cols-4'>
@@ -363,7 +373,7 @@ const Header = () => {
               className='hidden ml-10 sm:block'
             />
             {openMobileMenu ? (
-              <div>
+              <div className='hidden sm:block'>
                 <div
                   className={`absolute top-0 right-0 w-[120px] h-[100vh] bg-[#000] border-[#414141] border-l-[1px] z-[69] transform ${
                     openMobileMenu

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import { signInWithGoogle } from '../services/firebase';
 import Header from '@/components/Header';
 import { Formik, Field, Form } from 'formik';
@@ -15,8 +15,11 @@ import axiosClient from '@/api/axiosClient';
 import { useRouter } from 'next/router';
 import { useAppDispatch } from '@/Redux/hooks';
 import { login } from '@/Redux/slice/userSlice';
-import backgroundImage from '../assets/background.jpg';
 import SignInGoogle from '@/components/SignInGoogle';
+// import { NoFooterLayout } from '@/components/NoFooterLayout';
+import { NextPageWithLayout } from './_app';
+import Layout from '@/components/DefaultLayout';
+import { MyPage } from '@/page';
 // import bgVideo from '../public/background-video.mp4';
 
 interface loginValueForm {
@@ -24,7 +27,7 @@ interface loginValueForm {
   password: string;
 }
 
-const Login = () => {
+const Login: MyPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -199,3 +202,16 @@ const Login = () => {
 };
 
 export default Login;
+// Login.getLayout = NoFooterLayout;
+// Login.getLayout = function (page: ReactNode) {
+//   return <NoFooterLayout>{page}</NoFooterLayout>;
+// };
+
+// Login.getLayout = function getLayout(page: ReactElement) {
+//   return (
+//     <Layout>
+//       <NoFooterLayout>{page}</NoFooterLayout>
+//     </Layout>
+//   );
+// };
+Login.Layout = 'NoFooter';

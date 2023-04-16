@@ -11,6 +11,7 @@ import Link from 'next/link';
 import axiosClient from '@/api/axiosClient';
 import { toast } from 'react-toastify';
 import SignInGoogle from '@/components/SignInGoogle';
+import { MyPage } from '@/page';
 
 interface signUpValueForm {
   username: string;
@@ -19,7 +20,7 @@ interface signUpValueForm {
   confirmPassword: string;
 }
 
-const SignUp = () => {
+const SignUp: MyPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -203,3 +204,5 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+SignUp.Layout = 'NoFooter';

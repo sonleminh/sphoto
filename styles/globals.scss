@@ -24,6 +24,16 @@ a {
   cursor: pointer;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
@@ -125,4 +135,15 @@ input:-webkit-autofill:focus {
   display: flex;
   align-items: center;
   padding-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+  .swiper-button-prev {
+    background-color: #000000ad !important;
+    color: #eeeeee;
+  }
+  .swiper-button-next {
+    background-color: #000000ad !important;
+    color: #eeeeee;
+  }
 }

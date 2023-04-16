@@ -1,36 +1,70 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axiosClient from '@/api/axiosClient';
 import Image from 'next/image';
-import Gallery from '@/components/Gallery';
+import Carousel from '@/components/Carousel';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/zoom';
 import { useAppSelector } from '@/Redux/hooks';
-import { FaRegImage } from 'react-icons/fa';
+// import { useParallax } from 'react-scroll-parallax';
+import banner from '../assets/banner.png';
+import banner1 from '../assets/banner1.png';
+import banner2 from '../assets/banner2.png';
+import banner3 from '../assets/banner3.jpg';
+import banner4 from '../assets/banner2-mobile.jpg';
+import Link from 'next/link';
+import { useSpring, animated } from 'react-spring';
+import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax';
+import {
+  FaRegImage,
+  FaAngleRight,
+  FaFacebookSquare,
+  FaGithubSquare,
+  FaLinkedin,
+} from 'react-icons/fa';
+import { MyPage } from '@/page';
+import ReactPaginate from 'react-paginate';
+
+// import banner from '../assets/banner2.png';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
+const Home: MyPage = () => {
   const user = useAppSelector((state) => state.user);
   const loading = useAppSelector((state) => state.loading.value);
   const [hasWindow, setHasWindow] = useState(false);
   const [postList, setPostList] = useState<any>([]);
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [index, setIndex] = useState<number>();
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + 20;
+  const currentItems = postList.slice(itemOffset, endOffset);
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const pageCount = Math.ceil(postList.length / 20);
 
+  const handlePageClick = (e: any) => {
+    const newOffset = (e.selected * 20) % postList.length;
+    console.log(
+      `User requested page number ${e.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
   useEffect(() => {
-    const getList = async () => {
-      try {
-        const res = await axiosClient.get(`/api/post/${user._id}`);
-        setPostList(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getList();
+    if (user._id) {
+      const getList = async () => {
+        try {
+          const res = await axiosClient.get(`/api/posts/${user._id}`);
+          setPostList(res);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getList();
+    }
+    return;
   }, [user._id, loading]);
 
   useEffect(() => {
@@ -43,7 +77,18 @@ export default function Home() {
     setShowGallery(!showGallery);
     setIndex(index);
   };
-
+  const parallax = useRef<IParallax>(null!);
+  const fadeInDown = useSpring({
+    from: {
+      opacity: 0,
+      translateY: '-300px',
+    },
+    to: {
+      opacity: 1,
+      translateY: '0px',
+    },
+    delay: 200,
+  });
   return (
     <div>
       <Head>
@@ -53,55 +98,214 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main>
-        <div className='mt-[60px]'>
-          {postList.length === 0 ? (
-            <div className='flex justify-center items-center h-[100vh] bg-black text-[#aaaaaa]'>
-              <div className='flex justify-center items-center w-[70%] h-[50%] border-2 border-[#A0A1A4] rounded-[6px] text-[30px]'>
-                Create your gallery{' '}
-                <FaRegImage className='ml-10 text-[100px]' />
+        {/* <div className='mt-[60px] scrollbar-hide'> */}
+        {!user._id ? (
+          <div
+            style={{
+              // display: 'flex',
+              // flexGrow: '1',
+              width: '100%',
+              height: 'calc(100vh - 55px)',
+            }}>
+            <Parallax
+              ref={parallax}
+              pages={3}
+              style={{
+                overflow: 'auto',
+              }}>
+              <ParallaxLayer
+                offset={0}
+                speed={0.2}
+                onClick={() => parallax.current.scrollTo(1)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // marginTop: '10px',
+                }}>
+                <animated.div
+                  style={fadeInDown}
+                  className="flex items-center justify-center w-full h-full mt-[4%] bg-[url('../assets/banner.png')] bg-cover sm:mt-[20%] sm:bg-[url('../assets/banner-mobile.png')] sm:bg-center"></animated.div>
+              </ParallaxLayer>
+              <ParallaxLayer
+                offset={0}
+                speed={-0.3}
+                onClick={() => parallax.current.scrollTo(1)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <animated.div
+                  style={fadeInDown}
+                  className='text-[#f0f0f0] text-center sm:mb-[20px]'>
+                  <div className='mb-5 text-[26px] sm:mb-2 sm:text-[22px]'>
+                    The home for your memories
+                  </div>
+                  <Link href='/login'>
+                    <button className='px-6 py-1.5 border-2 border-[#A0A1A4] rounded text-[18px] hover:bg-[#151515] sm:text-[16px]'>
+                      Go to sphoto
+                    </button>
+                  </Link>
+                </animated.div>
+              </ParallaxLayer>
+              <ParallaxLayer
+                offset={0.8}
+                speed={-0.2}
+                onClick={() => parallax.current.scrollTo(2)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <div className='flex justify-start items-center w-full'>
+                  <div className='w-[35%] text-[30px] text-[#f0f0f0] text-center sm:w-full sm:mb-[40%] sm:text-[24px]'>
+                    A simple gallery using Next.js
+                  </div>
+                </div>
+              </ParallaxLayer>
+              <ParallaxLayer
+                offset={1.2}
+                speed={0.2}
+                style={{ pointerEvents: 'none' }}>
+                <div className='w-[55%] ml-[35%] sm:mt-[55%] sm:ml-[10%] '>
+                  <Image src={banner1} alt='c' width={620} height={620} />
+                </div>
+              </ParallaxLayer>
+              <ParallaxLayer
+                offset={1.48}
+                speed={-0.1}
+                style={{ pointerEvents: 'none' }}>
+                <div className='w-[55%] ml-[55%] sm:mt-[15%] sm:ml-[35%]'>
+                  <Image src={banner2} alt='c' width={620} height={620} />
+                </div>
+              </ParallaxLayer>
+
+              <ParallaxLayer
+                offset={2.05}
+                speed={0.5}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onClick={() => parallax.current.scrollTo(0)}>
+                <div className='flex items-center w-full mb-[5%] bg-black'>
+                  <div className='w-full object-cover sm:hidden'>
+                    <Image src={banner3} alt='c' width={700} height={700} />
+                  </div>
+                  <div className='w-full object-cover hidden sm:block sm:mb-[25%]'>
+                    <Image src={banner4} alt='c' width={700} height={700} />
+                  </div>
+                </div>
+              </ParallaxLayer>
+              <ParallaxLayer
+                offset={2.45}
+                speed={-0.2}
+                onClick={() => parallax.current.scrollTo(0)}>
+                <div className='w-full ml-[55%] text-[#f0f0f0] sm:text-center sm:ml-0 sm:text-white'>
+                  <div className='w-full mb-5 text-[26px] sm:text-[22px]'>
+                    More ways to enjoy your photos
+                  </div>
+                  <button className='px-6 py-1.5 border-2 border-[#A0A1A4] rounded text-[18px] hover:bg-[#151515] sm:text-[16px]'>
+                    Learn more
+                  </button>
+                </div>
+                ;
+              </ParallaxLayer>
+              <ParallaxLayer offset={2.93} speed={0}>
+                <div className='flex justify-center py-3 text-[#c2c2c2] border-t-2 border-[#313131]'>
+                  <div className='mr-5'>©Copyright. All rights reserved.</div>
+                  <div className='flex'>
+                    <a href='https://www.facebook.com/sonlele2'>
+                      <FaFacebookSquare className='mx-1.5 text-[22px]' />
+                    </a>
+                    <a href='https://github.com/sonleminh'>
+                      <FaGithubSquare className='mx-1.5 text-[22px]' />
+                    </a>
+                    <a href='https://www.linkedin.com/in/son-le-028715261/'>
+                      <FaLinkedin className='mx-1.5 text-[22px]' />
+                    </a>
+                  </div>
+                </div>
+              </ParallaxLayer>
+            </Parallax>
+          </div>
+        ) : (
+          <div className='mt-[65px]'>
+            {postList.length === 0 ? (
+              <div className='flex justify-center items-center h-[100vh] bg-black text-[#aaaaaa]'>
+                <div className='flex justify-center items-center w-[70%] h-[50%] border-2 border-[#A0A1A4] rounded-[6px] text-[30px]'>
+                  Create your gallery
+                  <FaRegImage className='ml-10 text-[100px]' />
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className='columns-4 gap-[15px] p-[15px] bg-black'>
-              {hasWindow &&
-                postList?.map((item: any, index: number) =>
-                  item.type === 'image' ? (
-                    <div
-                      key={index}
-                      onClick={() => handleClickImage(index)}
-                      className='w-full mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
-                      <Image src={item.url} alt='c' width={720} height={720} />
-                    </div>
-                  ) : (
-                    <div
-                      key={index}
-                      onClick={() => handleClickImage(index)}
-                      className='mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        controls
-                        className='w-auto h-auto'>
-                        <source src={item.url} />
-                      </video>
-                    </div>
-                  )
-                )}
-            </div>
-          )}
-          {showGallery ? (
-            <Gallery
-              postList={postList}
-              showGallery={showGallery}
-              setShowGallery={setShowGallery}
-              index={index}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+            ) : (
+              <div className='text-white'>
+                <div className='columns-4 gap-[15px] min-h-[calc(100vh-65px-70px)] p-[15px] bg-black sm:columns-2'>
+                  {hasWindow &&
+                    currentItems?.map((item: any, index: number) =>
+                      item.type === 'image' ? (
+                        <div
+                          key={index}
+                          onClick={() => handleClickImage(index)}
+                          className='w-full mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer'>
+                          <Image
+                            src={item.url}
+                            alt='c'
+                            width={720}
+                            height={720}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          key={index}
+                          onClick={() => handleClickImage(index)}
+                          className='mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer z-[69]'>
+                          <video
+                            autoPlay
+                            loop
+                            muted
+                            controls
+                            className='w-auto h-auto'>
+                            <source src={item.url} />
+                          </video>
+                        </div>
+                      )
+                    )}
+                </div>
+                <ReactPaginate
+                  breakLabel='...'
+                  nextLabel='>'
+                  nextClassName='px-2.5 mx-5 rounded text-[22px] text-[#666666] hover:bg-[#353535]'
+                  previousLabel='<'
+                  previousClassName='px-2.5 mx-5 rounded text-[22px] text-[#666666] hover:bg-[#353535]'
+                  pageClassName='px-2.5 py-1 mx-2 bg-[#161616] rounded hover:bg-[#353535] hover:cursor-pointer'
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={pageCount}
+                  renderOnZeroPageCount={null}
+                  containerClassName='flex justify-center items-center my-4 text-[#c2c2c2]'
+                />
+              </div>
+            )}
+            {showGallery ? (
+              <Carousel
+                postList={currentItems}
+                showGallery={showGallery}
+                setShowGallery={setShowGallery}
+                index={index}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
+        {/* </div> */}
       </main>
     </div>
   );
-}
+};
+
+export default Home;
+Home.Layout = 'NoFooter';

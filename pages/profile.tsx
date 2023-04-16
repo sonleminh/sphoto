@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/Redux/hooks';
 import axiosClient from '@/api/axiosClient';
 import Header from '@/components/Header';
+import { MyPage } from '@/page';
 import { log } from 'console';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,25 +15,25 @@ interface UserState {
   createdAt: string;
 }
 
-const List = () => {
+const List: MyPage = () => {
   const user: UserState = useAppSelector((state) => state.user);
   const [hasWindow, setHasWindow] = useState(false);
   const [imageList, setImageList] = useState<any>([]);
   const [checkList, setCheckList] = useState<any>([]);
-  const [typeData, setTypeData] = useState<any>('post');
+  const [typeData, setTypeData] = useState<any>('posts');
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
     const getList = async () => {
       try {
-        const res = await axiosClient.get(`/api/${typeData}`);
+        const res = await axiosClient.get(`/api/${typeData}/${user._id}`);
         setImageList(res);
       } catch (error) {
         console.log(error);
       }
     };
     getList();
-  }, [typeData]);
+  }, [typeData, user._id]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -97,7 +98,7 @@ const List = () => {
   };
 
   return (
-    <div className='pt-10 mt-[60px] mb-[40px] bg-black text-[#eeeeee] sm:mx-5'>
+    <div className='w-full pt-10 mt-[60px] mb-[40px] mx-auto bg-black text-[#eeeeee] sm:mx-5'>
       <div className='w-[700px] h-full mx-auto rounded-[5px] border-[#A0A1A4] border-[2px] sm:w-full'>
         <div className='flex justify-between p-5 border-b-2 border-b-[#A0A1A4] sm:p-3'>
           <p className='text-[20px] sm:text-[15px]'>Photo List</p>
@@ -205,3 +206,5 @@ const List = () => {
 };
 
 export default List;
+
+List.Layout = 'Default';
