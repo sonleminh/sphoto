@@ -9,8 +9,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/zoom';
 import { useAppSelector } from '@/Redux/hooks';
-// import { useParallax } from 'react-scroll-parallax';
-import banner from '../assets/banner.png';
 import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.jpg';
@@ -20,15 +18,12 @@ import { useSpring, animated } from 'react-spring';
 import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax';
 import {
   FaRegImage,
-  FaAngleRight,
   FaFacebookSquare,
   FaGithubSquare,
   FaLinkedin,
 } from 'react-icons/fa';
 import { MyPage } from '@/page';
-import ReactPaginate from 'react-paginate';
-
-// import banner from '../assets/banner2.png';
+import Pagination from '@/components/Pagination';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,19 +34,16 @@ const Home: MyPage = () => {
   const [postList, setPostList] = useState<any>([]);
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [index, setIndex] = useState<number>();
+
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + 20;
   const currentItems = postList.slice(itemOffset, endOffset);
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const pageCount = Math.ceil(postList.length / 20);
-
   const handlePageClick = (e: any) => {
     const newOffset = (e.selected * 20) % postList.length;
-    console.log(
-      `User requested page number ${e.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
+
   useEffect(() => {
     if (user._id) {
       const getList = async () => {
@@ -98,12 +90,9 @@ const Home: MyPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main>
-        {/* <div className='mt-[60px] scrollbar-hide'> */}
         {!user._id ? (
           <div
             style={{
-              // display: 'flex',
-              // flexGrow: '1',
               width: '100%',
               height: 'calc(100vh - 55px)',
             }}>
@@ -121,7 +110,6 @@ const Home: MyPage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  // marginTop: '10px',
                 }}>
                 <animated.div
                   style={fadeInDown}
@@ -274,18 +262,9 @@ const Home: MyPage = () => {
                       )
                     )}
                 </div>
-                <ReactPaginate
-                  breakLabel='...'
-                  nextLabel='>'
-                  nextClassName='px-2.5 mx-5 rounded text-[22px] text-[#666666] hover:bg-[#353535]'
-                  previousLabel='<'
-                  previousClassName='px-2.5 mx-5 rounded text-[22px] text-[#666666] hover:bg-[#353535]'
-                  pageClassName='px-2.5 py-1 mx-2 bg-[#161616] rounded hover:bg-[#353535] hover:cursor-pointer'
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={3}
+                <Pagination
                   pageCount={pageCount}
-                  renderOnZeroPageCount={null}
-                  containerClassName='flex justify-center items-center my-4 text-[#c2c2c2]'
+                  handlePageClick={handlePageClick}
                 />
               </div>
             )}

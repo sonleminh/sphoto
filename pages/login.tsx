@@ -1,26 +1,22 @@
 import React, { ReactElement, ReactNode, useState } from 'react';
-import { signInWithGoogle } from '../services/firebase';
-import Header from '@/components/Header';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
+import axiosClient from '@/api/axiosClient';
+import { useAppDispatch } from '@/Redux/hooks';
+import { login } from '@/Redux/slice/userSlice';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+
 import { FaEye, FaEyeSlash, FaUserCircle } from 'react-icons/fa';
 import { TiLockClosedOutline } from 'react-icons/ti';
-import Image from 'next/image';
 import logo from '../assets/sphoto-logo.png';
 import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
-import Link from 'next/link';
 import { toast } from 'react-toastify';
-import axiosClient from '@/api/axiosClient';
-import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/Redux/hooks';
-import { login } from '@/Redux/slice/userSlice';
+
 import SignInGoogle from '@/components/SignInGoogle';
-// import { NoFooterLayout } from '@/components/NoFooterLayout';
-import { NextPageWithLayout } from './_app';
-import Layout from '@/components/DefaultLayout';
 import { MyPage } from '@/page';
-// import bgVideo from '../public/background-video.mp4';
 
 interface loginValueForm {
   username: string;
@@ -41,7 +37,6 @@ const Login: MyPage = () => {
 
   const handleLoginFormSubmit = async (values: loginValueForm) => {
     try {
-      // const { username, password } = values;
       const response: any = await axiosClient.post('/api/login', values);
       console.log(response);
       if (response.message === 'Username or password is incorrect') {
@@ -73,20 +68,16 @@ const Login: MyPage = () => {
     } catch (error: any) {
       console.log(error);
       const errMessage = error.response.data;
-      toast.error(
-        errMessage.message,
-        // , vui lòng kiểm tra email để xác thực tài khoản!',
-        {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        }
-      );
+      toast.error(errMessage.message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }
   };
   return (

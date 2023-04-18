@@ -184,14 +184,6 @@ const List: MyPage = () => {
                         <source src={item.url} />
                       </video>
                     </div>
-                    {/* <ReactPlayer
-                        url={item.url}
-                        width='auto'
-                        height='150px'
-                        playing={false}
-                        muted={true}
-                        controls={true}
-                      /> */}
                   </div>
                   <button className='mx-8 text-[24px] hover:text-[#23232399]'>
                     <FaRegTrashAlt onClick={() => handleDeletePost(item._id)} />

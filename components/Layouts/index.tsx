@@ -1,4 +1,3 @@
-// components/common/Layouts.tsx
 import DefaultLayout from '../DefaultLayout';
 import NoFooterLayout from '../NoFooterLayout';
 export const Layouts = {

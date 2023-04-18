@@ -4,8 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper';
 import { BsXLg } from 'react-icons/bs';
 
-import { useRouter } from 'next/router';
-
 interface Props {
   postList: any;
   showGallery: boolean;
@@ -14,13 +12,10 @@ interface Props {
 }
 
 const Carousel: React.FC<Props> = (props) => {
-  const router = useRouter();
   const { postList, showGallery, setShowGallery, index } = props;
 
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
   const [swiperIndex, setSwiperIndex] = useState<any>();
-
-  // console.log('indexGallery', index);
 
   return (
     <React.Fragment>
@@ -66,7 +61,6 @@ const Carousel: React.FC<Props> = (props) => {
                     loop
                     muted
                     controls
-                    // [calc(100%-80px)]
                     className='max-h-[638px] mx-auto object-cover'>
                     <source src={item.url} />
                   </video>
@@ -111,7 +105,6 @@ const Carousel: React.FC<Props> = (props) => {
                   <video
                     loop
                     muted
-                    // [calc(100%-80px)]
                     className='max-h-[60px] mx-auto object-cover'>
                     <source src={item.url} />
                   </video>

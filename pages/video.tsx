@@ -3,6 +3,7 @@ import axiosClient from '@/api/axiosClient';
 import { useAppSelector } from '@/Redux/hooks';
 import { MyPage } from '@/page';
 import Carousel from '@/components/Carousel';
+import Pagination from '@/components/Pagination';
 
 interface UserState {
   _id: string;
@@ -16,6 +17,15 @@ const VideoPage: MyPage = () => {
   const [videoList, setVideoList] = useState<any>([]);
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [index, setIndex] = useState<number>();
+
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + 20;
+  const currentItems = videoList.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(videoList.length / 20);
+  const handlePageClick = (e: any) => {
+    const newOffset = (e.selected * 20) % videoList.length;
+    setItemOffset(newOffset);
+  };
 
   useEffect(() => {
     const getList = async () => {
@@ -52,9 +62,11 @@ const VideoPage: MyPage = () => {
             </div>
           ))}
         </div>
+        <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+
         {showGallery ? (
           <Carousel
-            postList={videoList}
+            postList={currentItems}
             showGallery={showGallery}
             setShowGallery={setShowGallery}
             index={index}

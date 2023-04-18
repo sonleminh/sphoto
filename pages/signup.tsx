@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { signInWithGoogle } from '../services/firebase';
-import Header from '@/components/Header';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash, FaUserCircle, FaEnvelope } from 'react-icons/fa';
@@ -184,11 +182,6 @@ const SignUp: MyPage = () => {
             }}
           </Formik>
           <div className='w-full mt-7 mb-5 text-center'>
-            {/* <button
-              onClick={signInWithGoogle}
-              className='login-with-google-btn'>
-              Sign in with Google
-            </button> */}
             <SignInGoogle />
           </div>
           <div className='w-full text-center'>
