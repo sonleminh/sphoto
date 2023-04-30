@@ -193,16 +193,4 @@ const Login: MyPage = () => {
 };
 
 export default Login;
-// Login.getLayout = NoFooterLayout;
-// Login.getLayout = function (page: ReactNode) {
-//   return <NoFooterLayout>{page}</NoFooterLayout>;
-// };
-
-// Login.getLayout = function getLayout(page: ReactElement) {
-//   return (
-//     <Layout>
-//       <NoFooterLayout>{page}</NoFooterLayout>
-//     </Layout>
-//   );
-// };
 Login.Layout = 'NoFooter';

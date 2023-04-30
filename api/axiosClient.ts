@@ -5,7 +5,7 @@ import queryString from 'query-string';
 const axiosClient = axios.create({
   // baseURL: 'http://localhost:4000',
   // baseURL: 'http://localhost:6969',
-  baseURL: 'https://sphoto-api.onrender.com',
+  baseURL: 'https://sphoto-api.up.railway.app/',
   headers: {
     'content-type': 'application/json',
   },

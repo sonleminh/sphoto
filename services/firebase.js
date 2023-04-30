@@ -1,8 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { useAppDispatch } from '@/Redux/hooks';
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { useRouter } from 'next/router';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyATdIQod3BYusuguqvE1y_RJRVcCe7DIU8',
@@ -28,13 +26,4 @@ export const signInWithGoogle = async () => {
   } catch (error) {
     console.log(error);
   }
-  // signInWithPopup(auth, provider)
-  //   .then((result) => {
-  //     const username = result.user.displayName;
-  //     dispatch(login({ username }));
-  //     // const email = result.user.email;
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
 };
