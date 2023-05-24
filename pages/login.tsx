@@ -67,7 +67,7 @@ const Login: MyPage = () => {
       }
     } catch (error: any) {
       console.log(error);
-      const errMessage = error.response.data;
+      const errMessage = error?.response.data;
       toast.error(errMessage.message, {
         position: 'top-right',
         autoClose: 3000,
