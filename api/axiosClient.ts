@@ -3,9 +3,9 @@ import queryString from 'query-string';
 // import queryString from 'query-string';
 
 const axiosClient = axios.create({
-  // baseURL: 'http://localhost:4000',
+  baseURL: 'http://localhost:4000',
   // baseURL: 'https://sphoto-api.up.railway.app/',
-  baseURL: 'https://sphoto-api.onrender.com/',
+  // baseURL: 'https://sphoto-api.onrender.com/',
   headers: {
     'content-type': 'application/json',
   },

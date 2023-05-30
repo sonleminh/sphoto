@@ -251,7 +251,7 @@ const Home: MyPage = () => {
                           onClick={() => handleClickImage(index)}
                           className='mb-[15px] rounded-xl border-[#313131] border-[1px] overflow-hidden cursor-pointer z-[69]'>
                           <video
-                            autoPlay
+                            // autoPlay
                             loop
                             muted
                             controls
