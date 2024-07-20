@@ -10,6 +10,8 @@ import {
   FaUserCircle,
   FaBars,
 } from 'react-icons/fa';
+import { FaCode } from 'react-icons/fa';
+
 import { BsXLg } from 'react-icons/bs';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -31,7 +33,11 @@ const Header = () => {
   const user: UserState = useAppSelector((state) => state.user);
 
   const [previewSource, setPreviewSource] = useState<any[]>([]);
+  const [urlImage, setUrlImage] = useState<string>();
+  const [urlType, setUrlType] = useState<string>();
+
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openAddUrlModal, setOpenAddUrlModal] = useState(false);
   const [showHeaderMenu, setShowHeaderMenu] = useState<boolean>(false);
   const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
   const [load, setLoad] = useState<boolean>(false);
@@ -56,6 +62,7 @@ const Header = () => {
   const handleInputChange = (e: any) => {
     const files = e.target.files;
     previewFile(files);
+    console.log('files:', files);
   };
 
   const previewFile = (files: any) => {
@@ -98,14 +105,12 @@ const Header = () => {
       data = data?.map((item: any) => {
         if (item.resource_type === 'image') {
           return {
-            publicId: item.public_id,
             url: item.url,
             type: 'image',
             user: user._id,
           };
         } else {
           return {
-            publicId: item.public_id,
             url: item.url,
             type: 'video',
             user: user._id,
@@ -133,6 +138,19 @@ const Header = () => {
     }
   };
 
+  const handleUrlSubmit = async () => {
+    const payload = {
+      url: urlImage,
+      type: urlType,
+      user: user._id,
+    };
+    const res: any = await axiosClient.post('/api/post', {
+      data: payload,
+    });
+    setOpenAddUrlModal(false);
+    dispatch(loading());
+  };
+
   const handleDeletePreview = (index: number) => {
     previewSource.splice(index, 1);
     setLoad(!load);
@@ -155,6 +173,10 @@ const Header = () => {
 
   const handleOpenMobileMenu = () => {
     setOpenMobileMenu(!openMobileMenu);
+  };
+
+  const handleTypeChange = (event: any) => {
+    setUrlType(event.target.value);
   };
 
   return (
@@ -337,7 +359,115 @@ const Header = () => {
                 </div>
               </Dialog>
             </Transition.Root>
+            <button
+              onClick={() => setOpenAddUrlModal(!openAddUrlModal)}
+              className='flex justify-center items-center w-[60px] py-1 mx-2 text-center border-2 border-[#A0A1A4] rounded-[6px] hover:bg-[#282828] lg:w-[55px] lg:mx-1'>
+              <FaPlus className='text-[12px] mr-1' />
+              <FaCode />
+            </button>
+            {/* </div> */}
+            <Transition.Root show={openAddUrlModal} as={Fragment}>
+              <Dialog
+                as='div'
+                className='relative z-10'
+                initialFocus={cancelButtonImageRef}
+                onClose={setOpenAddUrlModal}>
+                <Transition.Child
+                  as={Fragment}
+                  enter='ease-out duration-300'
+                  enterFrom='opacity-0'
+                  enterTo='opacity-100'
+                  leave='ease-in duration-200'
+                  leaveFrom='opacity-100'
+                  leaveTo='opacity-0'>
+                  <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+                </Transition.Child>
 
+                <div className='fixed inset-0 z-10 overflow-y-auto'>
+                  <div className='flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0'>
+                    <Transition.Child
+                      as={Fragment}
+                      enter='ease-out duration-300'
+                      enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+                      enterTo='opacity-100 translate-y-0 sm:scale-100'
+                      leave='ease-in duration-200'
+                      leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+                      leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
+                      <Dialog.Panel className='max-w-[800px] w-full lg:max-w-[800px] relative transform overflow-hidden rounded-lg bg-black text-[#f3f3f3] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:mx-5'>
+                        <div className='px-4 pt-3 pb-4 mb-2 sm:p-6 sm:px-2 sm:pb-4'>
+                          <div className='sm:flex sm:items-start'>
+                            <div className='mt-2 text-center sm:mt-0 sm:ml-2 sm:text-left'>
+                              <Dialog.Title
+                                as='h2'
+                                className='text-[24px] font-semibold'>
+                                Upload Url Image
+                              </Dialog.Title>
+                              <div className='mt-5'>
+                                <div className=''>
+                                  <label
+                                    htmlFor='url_input'
+                                    className='flex items-center mr-4'>
+                                    URL:
+                                    <input
+                                      id='url_input'
+                                      type='text'
+                                      onChange={(e) =>
+                                        setUrlImage(e.target.value)
+                                      }
+                                      className='ml-2 bg-[#000] outline-none'
+                                    />
+                                  </label>
+                                  <div className='block mt-2 text-start'>
+                                    <label className='mr-4'>
+                                      <input
+                                        type='radio'
+                                        value='image'
+                                        checked={urlType === 'image'}
+                                        onChange={handleTypeChange}
+                                        className='mr-2'
+                                      />
+                                      Image
+                                    </label>
+                                    <label>
+                                      <input
+                                        type='radio'
+                                        value='video'
+                                        checked={urlType === 'video'}
+                                        onChange={handleTypeChange}
+                                        className='mr-2'
+                                      />
+                                      Video
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='flex justify-end px-4 py-3 bg-[#151718]'>
+                          <button
+                            type='button'
+                            className='inline-flex w-[100px] justify-center rounded-md bg-white text-gray-900 px-3 py-2 text-sm font-semibold  shadow-sm hover:bg-[#cccccc] sm:ml-3 sm:w-auto sm:px-5'
+                            onClick={handleUrlSubmit}>
+                            Upload
+                          </button>
+                          <button
+                            type='button'
+                            className='inline-flex w-[100px] justify-center px-3 py-2 ml-4 rounded-md bg-[#000] text-white text-sm font-semibold shadow-sm hover:bg-[#3a3a3a] sm:mt-0 sm:w-auto sm:px-5'
+                            onClick={() => {
+                              setOpenAddUrlModal(false);
+                              setPreviewSource([]);
+                            }}
+                            ref={cancelButtonImageRef}>
+                            Cancel
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition.Root>
             <div
               ref={menuRef}
               onClick={() => setShowHeaderMenu(!showHeaderMenu)}
